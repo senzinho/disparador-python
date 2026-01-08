@@ -1,5 +1,5 @@
 """
-🚀 ENVIO PARA TODOS OS 31 LEADS - SEM LIMITES!
+🚀 ENVIO PARA TODOS OS 27 LEADS - SEM LIMITES!
 """
 
 from selenium import webdriver
@@ -18,7 +18,7 @@ print("🚀 DISPARADOR - ENVIANDO PARA TODOS OS LEADS!")
 print()
 
 # Carregar TODOS os leads
-df = pd.read_csv('Farmagnus.csv')
+df = pd.read_csv('Farmagnus.csv', dtype={'Telefone': str})  # ✅ FORÇAR TELEFONE COMO STRING
 print(f"📋 Total de leads carregados: {len(df)}")
 print()
 
@@ -30,10 +30,11 @@ Aqui é da SJ Consulting.
 
 Falamos com você porque sabemos que 2026 será decisivo para quem vende no digital, e queremos te ajudar nisso.
 
-Somos a melhor consultoria de e-commerce farmacêutico do Brasil, especializados em:
+Somos a melhor consultoria de E-commerce farmacêutico do Brasil, especializados em:
 🚀 E-commerce multicanais
 🚀 Site Delivery para farmácias
 🚀 Tráfego pago focado em aumento de faturamento e vendas
+🚀 Atendente de IA para sua Farmácia
 
 Que tal começar o ano com uma estratégia profissional para crescer no digital?
 Podemos marcar um bate papo semana que vem . Qual horário fica melhor?"""
@@ -43,7 +44,10 @@ contatos = []
 for _, row in df.iterrows():
     nome_completo = str(row['Nome']).strip()
     primeiro_nome = nome_completo.split()[0] if nome_completo else 'Cliente'
-    telefone = f"+55{str(row['Telefone'])}"
+    telefone_sem_55 = str(row['Telefone']).strip()
+    
+    # ✅ AGORA ADICIONA O +55 CORRETAMENTE (telefone já está sem o 55)
+    telefone = f"+55{telefone_sem_55}"
     
     contatos.append({
         'nome': primeiro_nome,
@@ -103,6 +107,7 @@ for i, c in enumerate(contatos, 1):
     try:
         percentual = (i / len(contatos)) * 100
         print(f"[{i}/{len(contatos)} - {percentual:.0f}%] 📤 {c['nome_completo']}")
+        print(f"   📱 Telefone: {c['telefone']}")  # ✅ MOSTRAR TELEFONE PARA DEBUG
         
         mensagem = mensagem_template.replace('{nome}', c['nome'])
         tel = c['telefone'].replace('+', '').replace('-', '').replace(' ', '')
